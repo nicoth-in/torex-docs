@@ -92,7 +92,7 @@ element.appendChild(new Span({ items: new Text("Second row") }));
 
 ## Using Classes
 
-All Torex elements may be extend.
+All Torex elements may be extended.
 
 ```JS
 class MyOwnDiv extends Div {
