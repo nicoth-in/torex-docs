@@ -126,7 +126,7 @@ This will be very helpful on server generated pages.
 For example, you have this HTML:
 
 ```HTML
-<my-button />
+<button is="my-button"></button>
 ```
 
 And JS
@@ -153,16 +153,42 @@ new MyButton();
 
 And now, you should see "Clicked" in console after clicking button.
 
-Notice that our button isn't look like a button. That's because CSS doesn't know how to style it.
-And extending `button` just adds some specific DOM properties to your class but doesn't change CSS.
+### Autonomous elements
 
-To fix it, we can create element like this:
+With Torex you can build custom elements without extending HTML element.
 
-```HTML
-<button is="my-button"></button>
+```JS
+class MyNewElement extends Torex.Autonomous {
+  constructor() {
+    super({ custom: "my-new-element", items: new Text("Text inside") });
+  }
+}
+document.body.appendChild(new MyNewElement());
 ```
 
-### Shared storage
+Output would be:
+
+```HTML
+<my-new-element>Text inside</my-new-element>
+```
+
+You *must* set custom property in Autonomous elements.
+
+## Empty (Fragment) elements
+
+You can create an empty Fragment element without any tag. It can hold items and after attaching to the DOM tree disappears. (See Document Fragment for more)
+```JS
+class EmptyContainer extends Torex.Fragment {
+  constructor() {
+    super({items: new Text("Some text") });
+  }
+}
+```
+```HTML
+Some text
+```
+
+## Shared storage
 
 Shared storage is a build-in class attached to every Torex element.
 It is basically storage with `set()` and `get()` methods, but the data it stores is shared with children.
@@ -178,3 +204,7 @@ Shared storage can be accessed via `sharedStorage` field on Torex elements.
   span.sharedStorage.get("key"); // Will return 'value'
 
 ```
+
+Method `clear()` will clear all data in storage.
+
+Shared storage also dispatches "sharedstoragechanged" event on elements when being changed.
